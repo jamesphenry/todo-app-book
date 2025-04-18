@@ -42,7 +42,7 @@ jobs:
     - name: 📄 Export PDF from Combined Markdown
       run: |
         cat output/*.md > output/combined.md
-        md-to-pdf output/combined.md output/todo-docs.pdf
+        md-to-pdf output/combined.md --no-sandbox output/todo-docs.pdf
 
 
 
