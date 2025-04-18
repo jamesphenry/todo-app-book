@@ -1,0 +1,43 @@
+name: Puppeteer Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-23.10
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # You can change the version depending on your requirements
+
+    - name: Install dependencies
+      run: |
+        npm ci  # Install dependencies (or use npm install if needed)
+
+    - name: Install necessary dependencies for Chromium
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libnss3 libxss1 libappindicator3-1 libgdk-pixbuf2.0-0 libasound2
+
+    - name: Run Puppeteer tests with --no-sandbox
+      run: |
+        # Set environment variable for Chrome flags
+        export CHROME_FLAGS="--no-sandbox"
+        
+        # Run your tests (replace with your actual test script)
+        npm test  # Assuming you are running tests with npm test or similar script
+
+    - name: Generate Test Report (Optional)
+      run: |
+        # Run your test report generation script here (if necessary)
+        # Example: ./generate-report.sh
