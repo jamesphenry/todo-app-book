@@ -28,4 +28,11 @@ jobs:
     - name: 📦 Archive Markdown Output
       run: |
         mkdir -p dist
-        cp -r
+        shopt -s nullglob
+        files=(doc/*.md)
+        if (( ${#files[@]} )); then
+          cp "${files[@]}" dist/
+        else
+          echo "⚠️ No Markdown files found in /doc"
+        fi
+        zip -r todo-docs.zip dist
