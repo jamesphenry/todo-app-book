@@ -1,0 +1,36 @@
+name: Export Markdown Docs to PDF
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    name: Generate ToC and export PDF
+
+    steps:
+    - name: 📥 Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: 🛠️ Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: 📦 Restore and Build
+      run: dotnet build tools/GenerateToC/GenerateToC.csproj
+
+    - name: 🚀 Run ToC Generator
+      run: dotnet run --project tools/GenerateToC/GenerateToC.csproj
+
+    - name: 📤 Upload Updated Markdown
+      uses: actions/upload-artifact@v3
+      with:
+        name: updated-docs
+        path: |
+          doc/cover.md
+          doc/*.md
+
+    # placeholder for future PDF generation step
