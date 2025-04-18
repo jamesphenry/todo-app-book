@@ -39,9 +39,11 @@ jobs:
     - name: 📚 Install md-to-pdf
       run: npm install -g md-to-pdf
 
-    - name: 📄 Export PDF from Markdown
+    - name: 📄 Export PDF from Combined Markdown
       run: |
-        md-to-pdf output/*.md --out output/todo-docs.pdf
+        cat output/*.md > output/combined.md
+        md-to-pdf output/combined.md --output output/todo-docs.pdf
+
 
     - name: 📎 Print Paths for Manual Download
       run: |
