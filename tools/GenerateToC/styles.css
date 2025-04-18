@@ -1,0 +1,77 @@
+/* General Book Styles */
+body {
+	font-family: "Georgia", serif;
+	font-size: 12pt;
+	line-height: 1.5;
+	margin: 1.5in;
+	background-color: #fafafa;
+	color: #333;
+}
+
+/* Page breaks between chapters */
+h1, h2, h3 {
+	page-break-before: always;
+}
+
+/* Title page / Cover page */
+.cover-page {
+	text-align: center;
+	font-size: 36px;
+	font-weight: bold;
+	margin-top: 200px;
+	color: #333;
+}
+
+	.cover-page h1 {
+		font-size: 48px;
+	}
+
+/* Table of Contents */
+.toc {
+	margin-top: 40px;
+	font-size: 14pt;
+	color: #444;
+}
+
+/* Footer with page numbers */
+@page {
+	size: A4;
+	margin: 1in;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 10pt;
+	color: #777;
+}
+
+	footer p {
+		margin: 0;
+	}
+
+/* Footer with dynamic content (commit hash or version) */
+@page {
+	size: A4;
+	margin: 1in;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 10pt;
+	color: #777;
+}
+
+	footer p {
+		margin: 0;
+	}
+
+	footer .commit-info {
+		font-size: 8pt;
+		color: #aaa;
+	}

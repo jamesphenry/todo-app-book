@@ -1,0 +1,46 @@
+name: Export Markdown Docs to PDF
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  export-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔽 Checkout repo
+      uses: actions/checkout@v3
+
+    - name: 📦 Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📥 Install md-to-pdf
+      run: npm install -g md-to-pdf
+
+    - name: 💻 Generate Table of Contents
+      run: |
+        dotnet build tools/GenerateToC/GenerateToC.csproj
+        dotnet run --project tools/GenerateToC/GenerateToC.csproj
+
+    - name: 🖨️ Convert .md files to PDF
+      run: |
+        # Fetch the latest commit hash
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        
+        mkdir -p exported
+        # Create a PDF with a cover page and ToC, injecting commit hash in footer
+        md-to-pdf doc/cover.md --output exported/cover.pdf --css tools/styles.css --variable commitHash="$COMMIT_HASH"
+        # Convert the rest of the chapters and docs
+        for f in doc/*.md; do
+          name=$(basename "$f" .md)
+          md-to-pdf "$f" --output "exported/$name.pdf" --css tools/styles.css --variable commitHash="$COMMIT_HASH"
+        done
+
+    - name: 📤 Upload PDFs
+      uses: actions/upload-artifact@v3
+      with:
+        name: PDF Docs
+        path: exported/
