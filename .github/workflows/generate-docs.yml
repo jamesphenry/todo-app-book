@@ -25,29 +25,25 @@ jobs:
     - name: 🚀 Run ToC Generator
       run: dotnet run --project tools/GenerateToC/GenerateToC.csproj
 
-    - name: 📂 Prepare Markdown Output
+    - name: 📂 Copy Markdown Files
       run: |
-        mkdir -p dist
+        mkdir -p output
         shopt -s nullglob
         files=(doc/*.md)
         if (( ${#files[@]} )); then
-          cp "${files[@]}" dist/
+          cp "${files[@]}" output/
         else
           echo "⚠️ No Markdown files found in /doc"
         fi
 
     - name: 📚 Install md-to-pdf
-      run: |
-        npm install -g md-to-pdf
+      run: npm install -g md-to-pdf
 
-    - name: 📄 Generate PDF from Markdown
+    - name: 📄 Export PDF from Markdown
       run: |
-        md-to-pdf dist/*.md --out dist/todo-docs.pdf
+        md-to-pdf output/*.md --out output/todo-docs.pdf
 
-    - name: 📤 Upload All Docs
-      uses: dawidd6/action-upload-artifact@v2
-      with:
-        name: todo-docs
-        path: |
-          dist/*.md
-          dist/todo-docs.pdf
+    - name: 📎 Print Paths for Manual Download
+      run: |
+        echo "📝 Output files written to: $GITHUB_WORKSPACE/output"
+        echo "📄 You can manually retrieve them from the runner if needed."
