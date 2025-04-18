@@ -25,7 +25,7 @@ jobs:
     - name: 🚀 Run ToC Generator
       run: dotnet run --project tools/GenerateToC/GenerateToC.csproj
 
-    - name: 📦 Archive Markdown Output
+    - name: 📂 Prepare Markdown Output
       run: |
         mkdir -p dist
         shopt -s nullglob
@@ -35,4 +35,19 @@ jobs:
         else
           echo "⚠️ No Markdown files found in /doc"
         fi
-        zip -r todo-docs.zip dist
+
+    - name: 📚 Install md-to-pdf
+      run: |
+        npm install -g md-to-pdf
+
+    - name: 📄 Generate PDF from Markdown
+      run: |
+        md-to-pdf dist/*.md --out dist/todo-docs.pdf
+
+    - name: 📤 Upload All Docs
+      uses: dawidd6/action-upload-artifact@v2
+      with:
+        name: todo-docs
+        path: |
+          dist/*.md
+          dist/todo-docs.pdf
