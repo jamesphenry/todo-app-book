@@ -44,7 +44,7 @@ jobs:
         cat output/*.md > output/combined.md
         export CHROME_BIN=/usr/bin/chromium-browser
         export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-        md-to-pdf output/combined.md --destination output/todo-docs.pdf
+        md-to-pdf output/combined.md output/todo-docs.pdf
       env:
         CHROME_HEADLESS: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
