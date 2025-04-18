@@ -42,7 +42,13 @@ jobs:
     - name: 📄 Export PDF from Combined Markdown
       run: |
         cat output/*.md > output/combined.md
-        md-to-pdf output/combined.md --no-sandbox output/todo-docs.pdf
+        export CHROME_BIN=/usr/bin/chromium-browser
+        export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+        md-to-pdf output/combined.md --destination output/todo-docs.pdf
+      env:
+        CHROME_HEADLESS: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
 
 
 
